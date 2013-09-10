@@ -1,6 +1,6 @@
 # Miniloid
 
-TODO: Write a gem description
+Minimum implementation of ATOM Object model; actors; like as Celluloid.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Include Miniloid in your Actor
 
 ## Contributing
 

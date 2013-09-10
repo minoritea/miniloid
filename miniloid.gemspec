@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Miniloid::VERSION
   spec.authors       = ["minoritea"]
   spec.email         = ["m.tokuda@aol.jp"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = "A minimum implementation of ATOM Object model; actors; like as Celluloid."
+  spec.summary       = "An actors library"
   spec.homepage      = ""
   spec.license       = "MIT"
 

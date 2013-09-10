@@ -11,7 +11,7 @@ module Miniloid
     
     def method_missing method_name, *args, &block
       raise StandardError.new(:NoSuchMethod) unless @reciever.respond_to? method_name
-      @queue << [method_name, args, block]
+      @queue << [self, method_name, args, block]
       nil
     end
     
@@ -22,23 +22,36 @@ module Miniloid
   
   class InnerThread < Thread
     def initialize reciever, queue
-      super reciever do |r,q|
+      super do
         loop do
-          _method, _args, _block = sq.pop
+          _context, _method, _args, _block = queue.pop
+          Actor.current = _context
           case [!!_args,!!_block]
           when [true,true]
-            r.__send__ _method, *_args, &_block
+            reciever.__send__ _method, *_args, &_block
           when [true,false]
-            r.__send__ _method, *_args
+            reciever.__send__ _method, *_args
           when [false,true]
-            r.__send__ _method, &_block
+            reciever.__send__ _method, &_block
           when [false,false]
-            r.__send__ _method
+            reciever.__send__ _method
           end
         end 
       end
     end
     
+  end
+  
+  class Actor
+    class << self
+      def current
+        ct = Thread.current
+        (InnerThread === ct && ct[:context]) ? ct[:context] : nil
+      end
+      def current= context
+        Thread.current[:context] = context
+      end
+    end
   end
   
   class << self
